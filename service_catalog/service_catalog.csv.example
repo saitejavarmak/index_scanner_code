@@ -1,0 +1,7 @@
+Namespace,Team,ServiceName,Language,URI location if present,Sub Team,DB Service
+analytics-platform,analytics,reporting-api,Java,analytics-platform/values.yaml,,PostgreSQL
+analytics-platform,analytics,etl-worker,Python,analytics-platform/values.yaml,,MongoDB
+search-platform,search,indexer-service,Java,search-platform/values.yaml,ingest,MongoDB
+search-platform,search,query-api,Java,search-platform/values.yaml,serving,MongoDB
+core-platform,platform,auth-service,Java,core-platform/values.yaml,,PostgreSQL
+core-platform,platform,notification-service,Kotlin,core-platform/values.yaml,,MongoDB

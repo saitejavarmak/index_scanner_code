@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.pytest_cache/
+.venv/
+venv/
+.env
+*.pyc
+.idea/
+.vscode/
+ui/node_modules/
+ui/dist/
+ui/api/.venv/
+.kiro/
+
+# Org-specific service catalog (create from the .example)
+service_catalog/service_catalog.csv

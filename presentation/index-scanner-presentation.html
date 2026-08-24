@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Index Scanner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#0f1117;color:#e1e4ed;overflow:hidden;height:100vh}
+  .slide{display:none;width:100vw;height:100vh;padding:40px 60px;flex-direction:column;justify-content:flex-start}
+  .slide.active{display:flex}
+  h1{font-size:2.4rem;font-weight:800;margin-bottom:8px}
+  h2{font-size:1.6rem;font-weight:700;color:#6c5ce7;margin-bottom:12px}
+  h3{font-size:1.05rem;font-weight:600;color:#74b9ff;margin-bottom:6px}
+  p,li{font-size:.95rem;line-height:1.6;color:#b0b5c5}
+  li{margin-bottom:3px}
+  ul{padding-left:20px}
+  .grad{background:linear-gradient(135deg,#6c5ce7,#74b9ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .sub{font-size:1.1rem;color:#8b8fa3;margin-bottom:20px}
+  .g{display:grid;gap:14px;margin-top:10px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+  .c{background:#1a1d27;border:1px solid #2a2e3f;border-radius:12px;padding:16px}
+  .c h3{margin-bottom:6px}
+  .tag{display:inline-block;padding:2px 10px;border-radius:14px;font-size:.75rem;font-weight:600;margin:2px}
+  .tp{background:rgba(108,92,231,.2);color:#6c5ce7}
+  .tg{background:rgba(0,184,148,.2);color:#00b894}
+  .tb{background:rgba(116,185,255,.2);color:#74b9ff}
+  .ty{background:rgba(253,203,110,.2);color:#fdcb6e}
+  .tr{background:rgba(225,112,85,.2);color:#e17055}
+  .ab{background:#1a1d27;border:2px solid #2a2e3f;border-radius:10px;padding:12px;text-align:center;font-weight:600;font-size:.9rem}
+  .aa{text-align:center;font-size:1.4rem;color:#6c5ce7;padding:4px 0}
+  .hi{color:#6c5ce7;font-weight:600}
+  .ok{color:#00b894}.wr{color:#fdcb6e}.dn{color:#e17055}.in{color:#74b9ff}
+  .esr{display:flex;gap:0;border-radius:8px;overflow:hidden;margin:8px 0}
+  .esr div{padding:10px 20px;font-weight:700;font-size:.95rem;text-align:center;flex:1}
+  .ee{background:rgba(0,184,148,.25);color:#00b894}
+  .es{background:rgba(108,92,231,.25);color:#6c5ce7}
+  .er{background:rgba(253,203,110,.25);color:#fdcb6e}
+  .nav{position:fixed;bottom:16px;right:24px;display:flex;gap:10px;z-index:100}
+  .nav button{background:#1a1d27;border:1px solid #2a2e3f;color:#e1e4ed;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.9rem}
+  .nav button:hover{border-color:#6c5ce7}
+  .cnt{position:fixed;bottom:18px;left:24px;color:#8b8fa3;font-size:.8rem}
+  .row{display:flex;gap:12px;align-items:stretch}
+  .col{flex:1}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Architecture -->
+<div class="slide active" id="s1">
+  <h1><span class="grad">🗄️ Index Scanner</span> — Architecture</h1>
+  <p class="sub">Automated MongoDB index analysis, comparison & creation from source code</p>
+
+  <div class="row" style="flex:1;gap:20px">
+    <!-- Left: Architecture diagram -->
+    <div class="col" style="flex:1.1">
+      <div style="display:flex;gap:10px;margin-bottom:8px">
+        <div class="ab" style="flex:1;border-color:#6c5ce7">🌿 Git / Bitbucket<br><small style="color:#8b8fa3">Source Repos</small></div>
+        <div class="ab" style="flex:1;border-color:#74b9ff">📁 Local Path<br><small style="color:#8b8fa3">Workspace</small></div>
+        <div class="ab" style="flex:1;border-color:#fdcb6e">⚙️ Config Repo<br><small style="color:#8b8fa3">Helm / Props</small></div>
+      </div>
+      <div class="aa">▼</div>
+      <div class="ab" style="border-color:#6c5ce7;background:rgba(108,92,231,.08);padding:14px">
+        <div style="font-size:1.15rem">🔍 Scanner Engine</div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap">
+          <span class="tag tp">Annotation Parser</span>
+          <span class="tag tb">Query Analyzer</span>
+          <span class="tag tg">Constant Resolver</span>
+          <span class="tag ty">DB Detector</span>
+          <span class="tag tr">ESR Classifier</span>
+        </div>
+      </div>
+      <div class="aa">▼</div>
+      <div style="display:flex;gap:10px;margin-bottom:8px">
+        <div class="ab" style="flex:1;border-color:#00b894">🖥️ React UI<br><small style="color:#8b8fa3">Web Dashboard</small></div>
+        <div class="ab" style="flex:1;border-color:#74b9ff">🤖 MCP Server<br><small style="color:#8b8fa3">IDE / Chat</small></div>
+        <div class="ab" style="flex:1;border-color:#fdcb6e">📦 CLI<br><small style="color:#8b8fa3">Scripts / CI</small></div>
+      </div>
+      <div class="aa">▼</div>
+      <div class="ab" style="border-color:#e17055;background:rgba(225,112,85,.08)">🗄️ Live MongoDB — Compare · Create · ESR Audit · Multi-Tenant</div>
+    </div>
+
+    <!-- Right: What it detects -->
+    <div class="col" style="flex:0.9">
+      <div class="c" style="margin-bottom:10px">
+        <h3>📋 What It Scans</h3>
+        <ul>
+          <li><span class="hi">@Document</span>, <span class="hi">@CompoundIndex</span>, <span class="hi">@Indexed</span></li>
+          <li><span class="hi">@TextIndexed</span>, <span class="hi">@HashIndexed</span>, <span class="hi">@GeoSpatialIndexed</span></li>
+          <li><span class="hi">BasicDBObject</span>, <span class="hi">Filters.*</span>, <span class="hi">Sorts.*</span></li>
+          <li><span class="hi">getCollection()</span>, <span class="hi">mongoTemplate</span></li>
+          <li>Constants: <span class="hi">AppConstants.FIELD</span> → resolved</li>
+          <li>DB names from properties, .env, Java config, URIs</li>
+        </ul>
+      </div>
+      <div class="c">
+        <h3>📐 ESR Rule (Compound Index Ordering)</h3>
+        <div class="esr">
+          <div class="ee">E — Equality<br><small>eq, in</small></div>
+          <div class="es">S — Sort<br><small>ascending, desc</small></div>
+          <div class="er">R — Range<br><small>gt, gte, lt, lte</small></div>
+        </div>
+        <p style="font-size:.85rem;margin-top:6px">
+          <span class="dn">❌ Bad:</span> <code style="color:#e17055">{createdAt:1, tenantId:1}</code> (Range→Equality)<br>
+          <span class="ok">✅ Good:</span> <code style="color:#00b894">{tenantId:1, createdAt:1}</code> (Equality→Range)
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: Features & Value -->
+<div class="slide" id="s2">
+  <h1><span class="grad">🗄️ Index Scanner</span> — Features & Value</h1>
+  <p class="sub">End-to-end MongoDB index lifecycle management</p>
+
+  <div class="g g3" style="flex:1">
+    <div class="c">
+      <h3>🔍 Scan & Analyze</h3>
+      <ul>
+        <li>Scan from <span class="in">Git</span> or <span class="in">local path</span></li>
+        <li>Detects defined indexes + suggests missing ones</li>
+        <li>ESR-ordered compound suggestions</li>
+        <li>Database + collection on every result</li>
+        <li>Filter, search, select & create inline</li>
+      </ul>
+    </div>
+    <div class="c">
+      <h3>⚡ Compare Live DB</h3>
+      <ul>
+        <li>Connect to MongoDB → fetch all indexes</li>
+        <li>Auto-match <span class="hi">tenant-prefixed</span> DBs<br><small style="color:#8b8fa3">candidates → abc_candidates, xyz_candidates</small></li>
+        <li>Show <span class="dn">missing</span> / <span class="ok">covered</span> / <span class="wr">ESR violations</span></li>
+        <li>One-click create per index or bulk create all</li>
+        <li>Filters out default _id indexes</li>
+      </ul>
+    </div>
+    <div class="c">
+      <h3>🔄 Script Compare</h3>
+      <ul>
+        <li>Compare tenant onboarding script vs code</li>
+        <li>Script from <span class="in">local file</span>, <span class="in">Git repo</span>, or <span class="in">paste</span></li>
+        <li>Shows gaps both ways:<br>
+          <span class="dn">missing from script</span> · <span class="wr">extra in script</span></li>
+        <li>Reuse credentials from source selector</li>
+      </ul>
+    </div>
+    <div class="c">
+      <h3>🚀 Multi-Tenant Create</h3>
+      <ul>
+        <li>Auto-detect DBs from code or pick from server</li>
+        <li>Select indexes → apply to N databases at once</li>
+        <li>Per-index result: <span class="ok">created</span> / <span class="in">exists</span> / <span class="dn">error</span></li>
+        <li>Works with {refNum}_dbName pattern</li>
+      </ul>
+    </div>
+    <div class="c">
+      <h3>📦 Export & Integrate</h3>
+      <ul>
+        <li>Mongo Shell scripts with <code>use db;</code></li>
+        <li>PyMongo scripts</li>
+        <li>Grouped by database → collection</li>
+        <li>Include suggestions toggle</li>
+        <li>Copy / Download ready</li>
+      </ul>
+    </div>
+    <div class="c">
+      <h3>🎯 Why This Matters</h3>
+      <ul>
+        <li><span class="ok">No more missed indexes</span> on new tenants</li>
+        <li><span class="ok">ESR compliance</span> — faster queries</li>
+        <li><span class="ok">Single source of truth</span> — code drives indexes</li>
+        <li><span class="ok">Multi-repo support</span> — config + code + scripts</li>
+        <li><span class="ok">Self-service</span> — devs & ops, no DBA needed</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<div class="nav">
+  <button onclick="prev()">← Prev</button>
+  <button onclick="next()">Next →</button>
+</div>
+<div class="cnt" id="cnt">1 / 2</div>
+<script>
+  let c=0;const s=document.querySelectorAll('.slide'),ct=document.getElementById('cnt');
+  function sh(n){s[c].classList.remove('active');c=(n+s.length)%s.length;s[c].classList.add('active');ct.textContent=`${c+1} / ${s.length}`}
+  function next(){sh(c+1)}function prev(){sh(c-1)}
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')next();if(e.key==='ArrowLeft')prev()});
+</script>
+</body>
+</html>

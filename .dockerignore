@@ -1,0 +1,10 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+ui/node_modules
+ui/api/.venv
+.kiro
+tests
+*.egg-info
+.pytest_cache

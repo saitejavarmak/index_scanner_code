@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: index-scanner-ui
+  labels:
+    app: index-scanner-ui
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: index-scanner-ui
+  template:
+    metadata:
+      labels:
+        app: index-scanner-ui
+    spec:
+      containers:
+        - name: index-scanner-ui
+          image: index-scanner-ui:latest  # Replace with your registry image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          # Temp dir for git clones — use emptyDir so it's writable
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: index-scanner-ui
+  labels:
+    app: index-scanner-ui
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: index-scanner-ui

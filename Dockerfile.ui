@@ -1,0 +1,59 @@
+# ============================================================
+# Index Scanner UI — Multi-stage Docker build
+# Build context: project root (index-scanner-mcp/)
+#
+# Build:  docker build -f Dockerfile.ui -t index-scanner-ui .
+# Run:    docker run -p 8080:8080 index-scanner-ui
+# ============================================================
+
+# --- Stage 1: Build React frontend ---
+FROM node:20-alpine AS frontend
+WORKDIR /build
+COPY ui/package.json ui/package-lock.json ./
+RUN npm ci
+COPY ui/index.html ui/vite.config.js ./
+COPY ui/public/ public/
+COPY ui/src/ src/
+RUN npm run build
+
+# --- Stage 2: Production Python image ---
+FROM python:3.13-slim
+WORKDIR /app
+
+# Install git (needed for repo clone feature) and clean up
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install scanner engine
+COPY pyproject.toml README.md ./
+COPY src/ src/
+RUN pip install --no-cache-dir .
+
+# Install API dependencies
+COPY ui/api/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy API server
+COPY ui/api/server.py ./server.py
+
+# Copy built React static files from stage 1
+COPY --from=frontend /build/dist /app/static
+
+# Environment
+ENV STATIC_DIR=/app/static
+ENV PORT=8080
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8080
+
+# Non-root user for security
+RUN useradd -m -r scanner && chown -R scanner:scanner /app
+USER scanner
+
+# Production server with gunicorn
+CMD ["gunicorn", "server:app", \
+     "--bind", "0.0.0.0:8080", \
+     "--workers", "4", \
+     "--timeout", "120", \
+     "--access-logfile", "-"]
